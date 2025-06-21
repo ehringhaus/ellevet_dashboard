@@ -1,0 +1,637 @@
+/* ElleVet Customer Retention Intelligence - Vertical Single-Page Design */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Source Sans Pro', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f8fafc;
+    color: #1f2937;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.title-section {
+    flex: 1;
+}
+
+.main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0.5rem 0 0 0;
+    max-width: 700px;
+}
+
+.refresh-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+/* Header controls layout */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.date-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.date-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.date-picker {
+    background: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    border-radius: 6px !important;
+    color: white !important;
+    font-size: 0.875rem !important;
+    padding: 0.5rem !important;
+}
+
+.refresh-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Executive Metrics Row */
+.metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: #e5e7eb;
+    margin: 0;
+}
+
+.metric-card {
+    background: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+.metric-card:hover {
+    background: #f8fafc;
+}
+
+.metric-card.urgent {
+    border-left: 4px solid #dc2626;
+}
+
+.metric-card.warning {
+    border-left: 4px solid #ea580c;
+}
+
+.metric-card.revenue {
+    border-left: 4px solid #059669;
+}
+
+.metric-card.success {
+    border-left: 4px solid #2563eb;
+}
+
+.metric-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0.75rem 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-desc {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Section Layout */
+.section {
+    background: white;
+    margin: 2rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 0 2rem 2rem 2rem;
+}
+
+.section .section-title {
+    padding-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.section .section-description {
+    margin-bottom: 1.5rem;
+    padding-left: 0;
+}
+
+.section-header {
+    padding: 2rem 0 1.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.025em;
+}
+
+.section-description {
+    font-size: 1rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+/* Filters */
+.filters-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.filter-dropdown {
+    font-size: 0.875rem !important;
+    min-height: 40px !important;
+}
+
+/* Table Container */
+.table-container {
+    padding: 0 2rem 2rem;
+}
+
+/* Analysis Grids */
+.analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.explanation-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid #3b82f6;
+}
+
+.chart-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+/* Info boxes for business context */
+.info-box {
+    background: #f0f9ff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid #0284c7;
+    margin-bottom: 1.5rem;
+}
+
+.info-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+}
+
+.info-content {
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* Indicators */
+.indicators-box {
+    background: #fef3c7;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid #f59e0b;
+}
+
+.indicators-content {
+    color: #92400e;
+    line-height: 1.6;
+}
+
+/* Actions */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.action-box {
+    background: #f0fdf4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid #22c55e;
+}
+
+.actions-content {
+    color: #166534;
+    line-height: 1.6;
+}
+
+.subsection-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.risk-explanation-text {
+    color: #374151;
+    line-height: 1.6;
+}
+
+/* Insights Grid */
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.insight-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+.insights-text {
+    color: #374151;
+    line-height: 1.6;
+}
+
+/* Chart description */
+.chart-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+/* Plotly chart responsiveness */
+.js-plotly-plot {
+    width: 100% !important;
+}
+
+.plotly .svg-container {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Force charts to be responsive */
+.chart-box .js-plotly-plot .plotly {
+    width: 100% !important;
+}
+
+.chart-box .js-plotly-plot .svg-container {
+    width: 100% !important;
+    min-height: 250px !important;
+}
+
+/* Table Styling */
+.dash-table-container {
+    font-family: 'Source Sans Pro', 'Roboto', sans-serif !important;
+    background: white !important;
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner th {
+    background-color: #f8fafc !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    padding: 1rem 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    border-right: 1px solid #f3f4f6 !important;
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner td {
+    font-size: 0.875rem !important;
+    padding: 1rem 0.75rem !important;
+    color: #1f2937 !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    border-right: 1px solid #f9fafb !important;
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner tr:hover td {
+    background-color: #f8fafc !important;
+}
+
+/* Dropdown Styling */
+.Select-control {
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    background: white !important;
+    font-size: 0.875rem !important;
+    min-height: 40px !important;
+    transition: border-color 0.2s ease !important;
+}
+
+.Select-control:hover {
+    border-color: #9ca3af !important;
+}
+
+.Select-control.is-focused {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.Select-value-label {
+    color: #1f2937 !important;
+    font-weight: 400 !important;
+}
+
+.Select-placeholder {
+    color: #9ca3af !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .analysis-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .explanation-box, .info-box, .indicators-box {
+        grid-column: 1 / -1;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-container {
+        max-width: 100%;
+        margin: 0 1rem;
+    }
+    
+    .section {
+        margin: 1rem 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filters-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .header-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .main-title {
+        font-size: 1.75rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .section-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+    
+    .analysis-grid, .insights-grid, .actions-grid {
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+    
+    /* Ensure charts remain responsive on mobile */
+    .chart-box .js-plotly-plot .svg-container {
+        min-height: 200px !important;
+    }
+    
+    .table-container {
+        padding: 0 1.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .metrics-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        padding: 1rem;
+    }
+    
+    .main-title {
+        font-size: 1.5rem;
+    }
+    
+    .metric-number {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-container {
+        margin: 0 0.5rem;
+    }
+    
+    .section {
+        border-radius: 4px;
+    }
+    
+    .section-header {
+        padding: 1rem;
+    }
+    
+    .analysis-grid, .insights-grid, .actions-grid {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .table-container {
+        padding: 0 1rem 1rem;
+    }
+    
+    .explanation-box, .chart-box, .insight-box, .info-box, .indicators-box, .action-box {
+        padding: 1rem;
+    }
+    
+    /* Mobile chart sizing */
+    .chart-box .js-plotly-plot .svg-container {
+        min-height: 180px !important;
+    }
+}
+
+/* Loading States */
+._dash-loading {
+    visibility: hidden;
+}
+
+._dash-loading::after {
+    content: 'Loading analytics...';
+    visibility: visible;
+    color: #6b7280;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Print Styles */
+@media print {
+    .refresh-btn {
+        display: none !important;
+    }
+    
+    .dashboard-container {
+        background: white !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .section {
+        break-inside: avoid;
+        margin: 1rem 0;
+        box-shadow: none;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .analysis-grid, .insights-grid, .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Info buttons */
+.info-button {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #3b82f6;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+}
+
+.info-button:hover {
+    background: #2563eb;
+}
+
+/* Focus and Accessibility */
+button:focus, .Select-control.is-focused {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
