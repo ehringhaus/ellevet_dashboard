@@ -10,7 +10,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/ellevet_dashboard.git
+git clone https://github.com/ehringhaus/ellevet_dashboard.git
 cd ellevet_dashboard
 
 # Create virtual environment
