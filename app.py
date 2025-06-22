@@ -1359,4 +1359,4 @@ def export_high_risk_customers(n_clicks, data_json):
         return f"❌ Export failed: {str(e)}", "📤 Export Top 10% High-Risk"
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host='0.0.0.0', port=8050)
+    app.run(debug=True, host='0.0.0.0', port=8050)
