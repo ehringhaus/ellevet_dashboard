@@ -24,7 +24,7 @@ pip install -r requirements.txt
 # Add data files to data_fast/ directory (see Data Files section)
 
 # Run dashboard
-python app.py
+python3 app.py
 ```
 
 ### Windows Setup
