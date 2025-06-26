@@ -21,7 +21,13 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Add data files to data_fast/ directory (see Data Files section)
+# IMPORTANT: Data files are NOT included in the git repository
+# You must obtain the data files separately and add them to data_fast/
+# Required files: customers_redacted.pkl, orders_redacted.pkl, orders_with_utm.pkl,
+# quizzes_redacted.pkl, refunds_affiliated.pkl, subscriptions_redacted.pkl, tickets_redacted.pkl
+
+# If you have CSV files instead of pickle files, use reduce_data.py to convert them:
+# python3 reduce_data.py  # This converts CSV files from data/ to pickle files in data_fast/
 
 # Run dashboard
 python3 app.py
@@ -42,13 +48,21 @@ venv\Scripts\activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 
-# Add data files to data_fast/ directory (see Data Files section)
+# IMPORTANT: Data files are NOT included in the git repository
+# You must obtain the data files separately and add them to data_fast/
+# Required files: customers_redacted.pkl, orders_redacted.pkl, orders_with_utm.pkl,
+# quizzes_redacted.pkl, refunds_affiliated.pkl, subscriptions_redacted.pkl, tickets_redacted.pkl
+
+# If you have CSV files instead of pickle files, use reduce_data.py to convert them:
+# python reduce_data.py  # This converts CSV files from data/ to pickle files in data_fast/
 
 # Run dashboard
 python app.py
 ```
 
 ### Data Files
+
+**IMPORTANT NOTE:** Data files are NOT included in the git repository and must be obtained separately due to their size and privacy considerations.
 
 Create a `data_fast/` directory and add these files:
 - `customers_redacted.pkl`
@@ -60,6 +74,15 @@ Create a `data_fast/` directory and add these files:
 - `tickets_redacted.pkl`
 
 Alternatively, use CSV files in a `data/` directory with the same names (`.csv` extension).
+
+#### About reduce_data.py
+
+The `reduce_data.py` script is a utility that converts CSV files into optimized pickle (.pkl) files. This significantly improves dashboard loading times by:
+- Converting large CSV files from the `data/` directory into compressed pickle files
+- Storing the optimized files in the `data_fast/` directory
+- Reducing memory usage and improving performance
+
+This will process all CSV files in the `data/` directory and create corresponding `.pkl` files in `data_fast/`. Use this script whenever you have updated CSV data files that need to be converted to the faster pickle format.
 
 ### Access Dashboard
 

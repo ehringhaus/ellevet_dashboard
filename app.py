@@ -1,5 +1,6 @@
 import dash
-from dash import dcc, html, dash_table, Input, Output, callback
+from dash import dcc, html, dash_table, Input, Output, State, callback
+import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -17,8 +18,8 @@ from data_loader import DataLoader
 from model import ChurnPredictor
 from config import CONFIG
 
-# Initialize the Dash app
-app = dash.Dash(__name__)
+# Initialize the Dash app with Bootstrap
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Initialize our data loader and model
 data_loader = DataLoader()
@@ -73,6 +74,25 @@ def save_persistent_cache(data):
 # Load persistent cache on startup
 load_persistent_cache()
 
+# Helper function to create expandable chart container
+def create_expandable_chart(chart_id, title, description=None):
+    """Create a chart container with expand functionality"""
+    content = [
+        html.Div([
+            html.H4(title, className='subsection-title', style={'display': 'inline-block'}),
+            html.Button('⛶', id=f'{chart_id}-expand-btn', 
+                       style={'float': 'right', 'border': 'none', 'background': 'none', 
+                              'fontSize': '20px', 'cursor': 'pointer', 'color': '#6b7280'})
+        ], style={'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}),
+    ]
+    
+    if description:
+        content.append(html.P(description, className='chart-description'))
+    
+    content.append(dcc.Graph(id=chart_id, config={'responsive': True}))
+    
+    return html.Div(content, className='chart-box')
+
 # Business-focused dashboard with clear definitions
 app.layout = html.Div([
     
@@ -84,13 +104,16 @@ app.layout = html.Div([
         ], className='title-section'),
         html.Div([
             html.Div([
-                html.Label("Analysis Date:", className='date-label'),
+                html.Label("Risk Review Date:", className='date-label'),
                 dcc.DatePickerSingle(
                     id='analysis-date',
                     date=datetime.now().date(),
                     display_format='YYYY-MM-DD',
                     className='date-picker'
-                )
+                ),
+                html.P("Find customers whose last order was 30-180 days prior to this date.", 
+                       className='date-helper', 
+                       style={'fontSize': '0.75rem', 'color': '#ffffff', 'margin': '0.25rem 0 0 0'})
             ], className='date-control'),
             html.Button("Refresh Data", id='refresh-btn', className='refresh-btn')
         ], className='header-controls')
@@ -204,7 +227,12 @@ app.layout = html.Div([
             
             # Top Risk Factors (SHAP)
             html.Div([
-                html.H4("Most Important Factors (AI Analysis)", className='subsection-title'),
+                html.Div([
+                    html.H4("Most Important Factors (AI Analysis)", className='subsection-title', style={'display': 'inline-block'}),
+                    html.Button('⛶', id='feature-importance-expand-btn', 
+                               style={'float': 'right', 'border': 'none', 'background': 'none', 
+                                      'fontSize': '20px', 'cursor': 'pointer', 'color': '#6b7280'})
+                ], style={'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}),
                 html.P("Machine learning model (best performer selected from multiple algorithms) identifies which customer behaviors most strongly predict non-return", 
                        className='chart-description'),
                 html.Details([
@@ -250,7 +278,12 @@ app.layout = html.Div([
             
             # Behavior Score Breakdown
             html.Div([
-                html.H4("Customer Behavior Score Distribution", className='subsection-title'),
+                html.Div([
+                    html.H4("Customer Behavior Score Distribution", className='subsection-title', style={'display': 'inline-block'}),
+                    html.Button('⛶', id='behavior-score-expand-btn', 
+                               style={'float': 'right', 'border': 'none', 'background': 'none', 
+                                      'fontSize': '20px', 'cursor': 'pointer', 'color': '#6b7280'})
+                ], style={'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}),
                 html.P("Weighted heuristic risk score (0-8 scale) based on customer service interactions and behavioral patterns", 
                        className='chart-description'),
                 html.Details([
@@ -290,7 +323,12 @@ app.layout = html.Div([
         html.Div([
             # Geographic Success Patterns
             html.Div([
-                html.H4("Geographic Retention Patterns", className='subsection-title'),
+                html.Div([
+                    html.H4("Geographic Retention Patterns", className='subsection-title', style={'display': 'inline-block'}),
+                    html.Button('⛶', id='geographic-success-expand-btn', 
+                               style={'float': 'right', 'border': 'none', 'background': 'none', 
+                                      'fontSize': '20px', 'cursor': 'pointer', 'color': '#6b7280'})
+                ], style={'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}),
                 html.P("Percentage of customers with 2+ orders by state (states with 5+ customers in 30-180 day window)", 
                        className='chart-description'),
                 dcc.Graph(id='geographic-success-chart', config={'responsive': True})
@@ -298,7 +336,12 @@ app.layout = html.Div([
             
             # Customer Journey Insights
             html.Div([
-                html.H4("Customer Journey Segments", className='subsection-title'),
+                html.Div([
+                    html.H4("Customer Journey Segments", className='subsection-title', style={'display': 'inline-block'}),
+                    html.Button('⛶', id='journey-segments-expand-btn', 
+                               style={'float': 'right', 'border': 'none', 'background': 'none', 
+                                      'fontSize': '20px', 'cursor': 'pointer', 'color': '#6b7280'})
+                ], style={'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}),
                 html.P("UMAP clustering of all customers in actionable 30-180 day window based on behavior patterns", 
                        className='chart-description'),
                 dcc.Graph(id='journey-segments-chart', config={'responsive': True})
@@ -306,7 +349,12 @@ app.layout = html.Div([
             
             # Product Success Analysis
             html.Div([
-                html.H4("Product Satisfaction Patterns", className='subsection-title'),
+                html.Div([
+                    html.H4("Product Satisfaction Patterns", className='subsection-title', style={'display': 'inline-block'}),
+                    html.Button('⛶', id='product-success-expand-btn', 
+                               style={'float': 'right', 'border': 'none', 'background': 'none', 
+                                      'fontSize': '20px', 'cursor': 'pointer', 'color': '#6b7280'})
+                ], style={'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}),
                 html.P("Repeat rates by product type (customers with 10+ per product in actionable 30-180 day window)", 
                        className='chart-description'),
                 dcc.Graph(id='product-success-chart', config={'responsive': True})
@@ -339,7 +387,23 @@ app.layout = html.Div([
     
     # Hidden data stores
     html.Div(id='raw-data-store', style={'display': 'none'}),  # Heavy computation cache
-    html.Div(id='processed-data-store', style={'display': 'none'})  # Date-dependent processing
+    html.Div(id='processed-data-store', style={'display': 'none'}),  # Date-dependent processing
+    
+    # Modals for fullscreen charts
+    dbc.Modal([
+        dbc.ModalHeader([
+            dbc.ModalTitle("", id='modal-title'),
+            html.Button('×', id="close-modal", 
+                       style={'position': 'absolute', 'right': '1rem', 'top': '0.5rem',
+                              'fontSize': '2rem', 'border': 'none', 'background': 'none',
+                              'color': 'rgba(0,0,0,0.5)', 'cursor': 'pointer', 'padding': '0.5rem',
+                              'lineHeight': '1', 'fontWeight': '300'})
+        ], close_button=False),
+        dbc.ModalBody(dcc.Graph(id='modal-graph', style={'height': '80vh'})),
+    ], id="chart-modal", size="xl", is_open=False, backdrop=True),
+    
+    # Store for modal state
+    dcc.Store(id='modal-store', data={'is_open': False, 'chart_id': None})
     
 ], className='dashboard-container')
 
@@ -686,7 +750,7 @@ def update_feature_importance(data_json):
         
         if not feature_impact.empty and 'importance' in feature_impact.columns:
             # Clean and validate data
-            top_features = feature_impact.head(8).copy()
+            top_features = feature_impact.head(10).copy()
             
             # Ensure no null values
             top_features = top_features.dropna()
@@ -886,10 +950,11 @@ def update_geographic_success_chart(data_json, analysis_date):
         
         state_success = us_data.groupby('shipping_state').agg({
             'total_orders': lambda x: (x >= 2).mean(),  # Repeat rate (2+ orders)
-            'customer_id': 'count'
+            'customer_id': 'count',
+            'total_spent': 'mean'  # Add average spend
         }).reset_index()
         
-        state_success.columns = ['state', 'repeat_rate', 'customer_count']
+        state_success.columns = ['state', 'repeat_rate', 'customer_count', 'avg_spent']
         state_success = state_success[state_success['customer_count'] >= 5]  # Show more states
         
         # Clean data - remove any invalid values
@@ -914,15 +979,31 @@ def update_geographic_success_chart(data_json, analysis_date):
         # Ensure clean data types for plotting
         clean_geographic_data = pd.DataFrame({
             'state': state_success['state'].astype(str).tolist(),
-            'repeat_rate': state_success['repeat_rate'].astype(float).tolist()
+            'repeat_rate': state_success['repeat_rate'].astype(float).tolist(),
+            'customer_count': state_success['customer_count'].astype(int).tolist(),
+            'avg_spent': state_success['avg_spent'].astype(float).tolist()
         })
+        
+        # Format hover text
+        hover_text = []
+        for _, row in clean_geographic_data.iterrows():
+            hover_text.append(
+                f"State: {row['state']}<br>" +
+                f"Repeat Rate: {row['repeat_rate']:.1%}<br>" +
+                f"Sample Size: {row['customer_count']} customers<br>" +
+                f"Average Spend: ${row['avg_spent']:.2f}"
+            )
         
         # Use go.Bar instead of px.bar to avoid template issues
         fig = go.Figure(data=[
             go.Bar(
                 x=clean_geographic_data['state'],
                 y=clean_geographic_data['repeat_rate'],
-                marker_color='#10b981'
+                marker_color='#10b981',
+                text=[f"{r:.1%}" for r in clean_geographic_data['repeat_rate']],
+                textposition='outside',
+                hovertext=hover_text,
+                hoverinfo='text'
             )
         ])
         
@@ -1357,6 +1438,60 @@ def export_high_risk_customers(n_clicks, data_json):
     except Exception as e:
         print(f"Error exporting customers: {e}")
         return f"❌ Export failed: {str(e)}", "📤 Export Top 10% High-Risk"
+
+# Modal callback to handle opening/closing
+@app.callback(
+    [Output("chart-modal", "is_open"),
+     Output("modal-title", "children"),
+     Output("modal-graph", "figure")],
+    [Input(f'{chart_id}-expand-btn', 'n_clicks') for chart_id in ['behavior-score', 'feature-importance', 'geographic-success', 'journey-segments', 'product-success']] +
+    [Input("close-modal", "n_clicks")],
+    [State(f'{chart_id}-chart', 'figure') for chart_id in ['behavior-score', 'feature-importance', 'geographic-success', 'journey-segments', 'product-success']],
+    [State("chart-modal", "is_open")],
+    prevent_initial_call=True
+)
+def toggle_modal(*args):
+    """Handle modal open/close for all charts"""
+    ctx = dash.callback_context
+    
+    if not ctx.triggered:
+        return False, "", {}
+    
+    button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    
+    # Close button clicked
+    if button_id == "close-modal":
+        return False, "", {}
+    
+    # Extract chart info from button ID
+    chart_ids = ['behavior-score', 'feature-importance', 'geographic-success', 'journey-segments', 'product-success']
+    chart_titles = {
+        'behavior-score': 'Customer Risk Scores',
+        'feature-importance': 'Most Important Risk Factors',
+        'geographic-success': 'Geographic Retention Patterns',
+        'journey-segments': 'Customer Journey Segments',
+        'product-success': 'Product Satisfaction Patterns'
+    }
+    
+    # Find which expand button was clicked
+    for i, chart_id in enumerate(chart_ids):
+        if button_id == f'{chart_id}-expand-btn':
+            # Get the figure from states (after all the clicks inputs)
+            figure_index = i
+            figure = args[len(chart_ids) + 1 + figure_index]  # Skip all clicks and close button
+            
+            if figure:
+                # Update figure layout for fullscreen
+                if isinstance(figure, dict):
+                    figure = dict(figure)  # Make a copy
+                    if 'layout' not in figure:
+                        figure['layout'] = {}
+                    figure['layout']['height'] = None  # Remove fixed height
+                    figure['layout']['margin'] = dict(l=40, r=40, t=40, b=40)
+                
+                return True, chart_titles[chart_id], figure
+    
+    return False, "", {}
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8050)
